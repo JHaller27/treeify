@@ -26,36 +26,29 @@ class UnicodeWriter(IWriter):
 
         return self._prefixes[-1]
 
-    def write_primitive(self, node: PrimitiveNode):
-        print(self._prefix, node.value, sep="")
-
-    def write_list(self, node: ListNode):
-        def _write(key: int, val: INode, split: str, indent: str):
-            print(self._prefix, split, key, sep="")
-            self._push_prefix(indent)
-            val.write_to(self)
-            self._pop_prefix()
-
-        children = list(enumerate(node.values()))
-        for k, v in children[:-1]:
-            _write(k, v, SPLIT_INDENT, PIPED_INDENT)
-
-        k, v = children[-1]
-        _write(k, v, ELBOW_INDENT, EMPTY_INDENT)
-
-    def write_dict(self, node: DictNode):
+    def _write_kv_pairs(self, pairs: list[(str, INode)]):
         def _write(key: str, val: INode, split: str, indent: str):
             print(self._prefix, split, key, sep="")
             self._push_prefix(indent)
             val.write_to(self)
             self._pop_prefix()
 
-        children = node.values()
-        for k, v in children[:-1]:
+        for k, v in pairs[:-1]:
             _write(k, v, SPLIT_INDENT, PIPED_INDENT)
 
-        k, v = children[-1]
+        k, v = pairs[-1]
         _write(k, v, ELBOW_INDENT, EMPTY_INDENT)
+
+    def write_primitive(self, node: PrimitiveNode):
+        print(self._prefix, node.value, sep="")
+
+    def write_list(self, node: ListNode):
+        children = list(enumerate(node.values()))
+        self._write_kv_pairs(children)
+
+    def write_dict(self, node: DictNode):
+        children = node.values()
+        self._write_kv_pairs(children)
 
     def flush(self):
         pass
