@@ -5,10 +5,11 @@ from writer import UnicodeWriter
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-p", "--path", type=str, help="Path to YAML input file")
+parser.add_argument("path", type=str, nargs="?",
+                    help="Path to YAML input file (use '-' for stdin). Default: -")
 args = parser.parse_args()
 
-if args.path is None:
+if args.path is None or args.path == "-":
     lines = []
     line = input()
     while line != "":
