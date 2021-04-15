@@ -1,12 +1,6 @@
 from tree import *
 
 
-EMPTY_INDENT = '  '
-PIPED_INDENT = '│ '
-SPLIT_INDENT = '├ '
-ELBOW_INDENT = '└ '
-
-
 class UnicodeWriter(IWriter):
     def __init__(self):
         self._prefixes = []
@@ -25,6 +19,22 @@ class UnicodeWriter(IWriter):
 
         return self._prefixes[-1]
 
+    @property
+    def _empty_indent(self) -> str:
+        return '    '
+
+    @property
+    def _piped_indent(self) -> str:
+        return '│   '
+
+    @property
+    def _split_indent(self) -> str:
+        return '├── '
+
+    @property
+    def _elbow_indent(self) -> str:
+        return '└── '
+
     def _write_kv_pairs(self, pairs: list[(str, INode)]):
         def _write(key: str, val: INode, split: str, indent: str):
             if len(self._prefixes) == 0:
@@ -36,13 +46,13 @@ class UnicodeWriter(IWriter):
             self._pop_prefix()
 
         for k, v in pairs[:-1]:
-            _write(k, v, SPLIT_INDENT, PIPED_INDENT)
+            _write(k, v, self._split_indent, self._piped_indent)
 
         k, v = pairs[-1]
-        _write(k, v, ELBOW_INDENT, EMPTY_INDENT)
+        _write(k, v, self._elbow_indent, self._empty_indent)
 
     def write_primitive(self, node: PrimitiveNode):
-        indent = "" if len(self._prefixes) == 0 else ELBOW_INDENT
+        indent = "" if len(self._prefixes) == 0 else self._elbow_indent
         print(self._prefix, indent, node.value, sep="")
 
     def write_list(self, node: ListNode):
