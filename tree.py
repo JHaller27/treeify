@@ -21,8 +21,8 @@ class ListNode(INode):
     def __init__(self):
         self._children = list()
 
-    def __iter__(self):
-        return iter(self._children)
+    def values(self) -> list[INode]:
+        return list(self._children)
 
     def add_node(self, node: INode):
         self._children.append(node)
@@ -37,8 +37,8 @@ class DictNode(INode):
     def __init__(self):
         self._children = dict()
 
-    def __iter__(self):
-        return iter(self._children.items())
+    def values(self) -> list[tuple[str, INode]]:
+        return [(k, v) for k, v in self._children.items()]
 
     def add_node(self, key: str, node: INode):
         self._children[key] = node
