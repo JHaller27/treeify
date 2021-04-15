@@ -34,9 +34,9 @@ class UnicodeWriter(IWriter):
 
     def write_dict(self, node: DictNode):
         def _write(key: str, val: INode, split: str, indent: str):
-            print(self._prefix, split, k, sep="")
+            print(self._prefix, split, key, sep="")
             self._push_prefix(indent)
-            v.write_to(self)
+            val.write_to(self)
             self._pop_prefix()
 
         children = node.values()
