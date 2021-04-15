@@ -4,23 +4,35 @@ from writer import UnicodeWriter
 
 root = DictNode()
 
-alpha = ListNode()
-root.add_node("alpha", alpha)
-for i in range(1, 4):
-    alpha.add_node(PrimitiveNode(f"alpha.{i}"))
+dict_node = DictNode()
+root.add_node("dict", dict_node)
 
-alpha4 = ListNode()
-alpha.add_node(alpha4)
-for i in range(1, 4):
-    alpha4.add_node(PrimitiveNode(f"alpha.4.{i}"))
+sub_dict = DictNode()
+dict_node.add_node("subdict", sub_dict)
 
-bravo = DictNode()
-root.add_node("bravo", bravo)
-for i in range(1, 4):
-    bravo.add_node(f"k{i}", PrimitiveNode(f"bravo.{i}"))
+list_node = ListNode()
+dict_node.add_node("list", list_node)
 
-charlie = PrimitiveNode("charlie")
-root.add_node("charlie", charlie)
+for i in [1, 2]:
+    sub_dict.add_node(f"key{i}", PrimitiveNode(f"val{i}"))
+    list_node.add_node(PrimitiveNode(f"val{i}"))
+
+dict_node.add_node("primitive", PrimitiveNode("string"))
+
+list_node = ListNode()
+root.add_node("list", list_node)
+
+sub_list = ListNode()
+list_node.add_node(sub_list)
+
+sub_dict = DictNode()
+list_node.add_node(sub_dict)
+
+for i in [1, 2]:
+    sub_list.add_node(PrimitiveNode(f"val{i}"))
+    sub_dict.add_node(f"key{i}", PrimitiveNode(f"val{i}"))
+
+list_node.add_node(PrimitiveNode("primitive"))
 
 writer = UnicodeWriter()
 root.write_to(writer)
