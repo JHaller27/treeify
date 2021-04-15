@@ -4,9 +4,18 @@ from tree import *
 from writer import UnicodeWriter
 
 
+def width_arg(rval: str) -> int:
+    ival = int(rval)
+    if ival < 2:
+        raise argparse.ArgumentTypeError(f"value may not be smaller than 2. Found '{ival}'.")
+    return ival
+
+
 parser = argparse.ArgumentParser()
 parser.add_argument("path", type=str, nargs="?",
                     help="Path to YAML input file (use '-' for stdin). Default: -")
+parser.add_argument("-w", "--width", type=width_arg, default=4,
+                    help="Indent size (must be no smaller than 2)")
 args = parser.parse_args()
 
 if args.path is None or args.path == "-":
@@ -46,5 +55,5 @@ data_struct = yaml.safe_load(data)
 
 root = to_node(data_struct)
 
-writer = UnicodeWriter()
+writer = UnicodeWriter(args.width)
 root.write_to(writer)

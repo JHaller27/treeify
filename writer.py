@@ -2,8 +2,9 @@ from tree import *
 
 
 class UnicodeWriter(IWriter):
-    def __init__(self):
+    def __init__(self, width: int = 4):
         self._prefixes = []
+        self._extend = width - 2
 
     def _push_prefix(self, addition: str):
         prefix = self._prefix + addition
@@ -21,19 +22,19 @@ class UnicodeWriter(IWriter):
 
     @property
     def _empty_indent(self) -> str:
-        return '    '
+        return ' {} '.format(' ' * self._extend)
 
     @property
     def _piped_indent(self) -> str:
-        return '│   '
+        return '│{} '.format(' ' * self._extend)
 
     @property
     def _split_indent(self) -> str:
-        return '├── '
+        return '├{} '.format('─' * self._extend)
 
     @property
     def _elbow_indent(self) -> str:
-        return '└── '
+        return '└{} '.format('─' * self._extend)
 
     def _write_kv_pairs(self, pairs: list[(str, INode)]):
         def _write(key: str, val: INode, split: str, indent: str):
