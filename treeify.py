@@ -1,38 +1,49 @@
+import yaml
+import argparse
 from tree import *
 from writer import UnicodeWriter
 
 
-root = DictNode()
+parser = argparse.ArgumentParser()
+parser.add_argument("-p", "--path", type=str, help="Path to YAML input file")
+args = parser.parse_args()
 
-dict_node = DictNode()
-root.add_node("dict", dict_node)
+if args.path is None:
+    lines = []
+    line = input()
+    while line != "":
+        lines.append(line)
+        try:
+            line = input()
+        except EOFError:
+            line = ""
+else:
+    with open(args.path, "r") as fp:
+        lines = fp.readlines()
 
-sub_dict = DictNode()
-dict_node.add_node("subdict", sub_dict)
 
-list_node = ListNode()
-dict_node.add_node("list", list_node)
+def to_node(struct) -> INode:
+    if isinstance(struct, dict):
+        node = DictNode()
+        for k, v in struct.items():
+            node.add_node(k, to_node(v))
 
-for i in [1, 2]:
-    sub_dict.add_node(f"key{i}", PrimitiveNode(f"val{i}"))
-    list_node.add_node(PrimitiveNode(f"val{i}"))
+        return node
 
-dict_node.add_node("primitive", PrimitiveNode("string"))
+    if isinstance(struct, list):
+        node = ListNode()
+        for v in struct:
+            node.add_node(to_node(v))
 
-list_node = ListNode()
-root.add_node("list", list_node)
+        return node
 
-sub_list = ListNode()
-list_node.add_node(sub_list)
+    return PrimitiveNode(struct)
 
-sub_dict = DictNode()
-list_node.add_node(sub_dict)
 
-for i in [1, 2]:
-    sub_list.add_node(PrimitiveNode(f"val{i}"))
-    sub_dict.add_node(f"key{i}", PrimitiveNode(f"val{i}"))
+data = "\n".join(lines)
+data_struct = yaml.safe_load(data)
 
-list_node.add_node(PrimitiveNode("primitive"))
+root = to_node(data_struct)
 
 writer = UnicodeWriter()
 root.write_to(writer)
