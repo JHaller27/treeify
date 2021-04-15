@@ -37,10 +37,6 @@ _Displayed as JSON_
 }
 ```
 
-├─┐
-|
-└─
-
 # Expected Tree
 
 ```
