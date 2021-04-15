@@ -27,6 +27,9 @@ class UnicodeWriter(IWriter):
 
     def _write_kv_pairs(self, pairs: list[(str, INode)]):
         def _write(key: str, val: INode, split: str, indent: str):
+            if len(self._prefixes) == 0:
+                split = ""
+                indent = ""
             print(self._prefix, split, key, sep="")
             self._push_prefix(indent)
             val.write_to(self)
@@ -39,7 +42,8 @@ class UnicodeWriter(IWriter):
         _write(k, v, ELBOW_INDENT, EMPTY_INDENT)
 
     def write_primitive(self, node: PrimitiveNode):
-        print(self._prefix, ELBOW_INDENT, node.value, sep="")
+        indent = "" if len(self._prefixes) == 0 else ELBOW_INDENT
+        print(self._prefix, indent, node.value, sep="")
 
     def write_list(self, node: ListNode):
         children = list(enumerate(node.values()))
