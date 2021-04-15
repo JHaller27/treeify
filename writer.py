@@ -5,7 +5,7 @@ EMPTY_INDENT = '   '
 PIPED_INDENT = '│  '
 SPLIT_INDENT = '├─'
 ELBOW_INDENT = '└─'
-ARRAY_INDEX =  '─┐'
+ARRAY_INDEX =  '─┬'
 
 
 class UnicodeWriter(IWriter):
@@ -30,7 +30,18 @@ class UnicodeWriter(IWriter):
         print(self._prefix, node.value, sep="")
 
     def write_list(self, node: ListNode):
-        pass
+        def _write(key: int, val: INode, split: str, indent: str):
+            print(self._prefix, split, key, sep="")
+            self._push_prefix(indent)
+            val.write_to(self)
+            self._pop_prefix()
+
+        children = list(enumerate(node.values()))
+        for k, v in children[:-1]:
+            _write(k, v, SPLIT_INDENT, PIPED_INDENT)
+
+        k, v = children[-1]
+        _write(k, v, ELBOW_INDENT, EMPTY_INDENT)
 
     def write_dict(self, node: DictNode):
         def _write(key: str, val: INode, split: str, indent: str):
