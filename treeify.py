@@ -1,5 +1,5 @@
 EMPTY_INDENT = '   '
-PIPED_INDENT = '|  '
+PIPED_INDENT = '│  '
 SPLIT_INDENT = '├─'
 ELBOW_INDENT = '└─'
 ARRAY_INDEX =  '─┐'

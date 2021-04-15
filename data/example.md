@@ -41,22 +41,22 @@ _Displayed as JSON_
 
 ```
 ├ dict
-| ├ subdict
-| | ├ key1
-| | | └ val1
-| | └ key2
-| |   └ val2
-| ├ list
-| | ├ val1
-| | └ val2
-| └ primitive
-|   └ string
+│ ├ subdict
+│ │ ├ key1
+│ │ │ └ val1
+│ │ └ key2
+│ │   └ val2
+│ ├ list
+│ │ ├ val1
+│ │ └ val2
+│ └ primitive
+│   └ string
 └ list
   ├─┬ val1
-  | └ val2
+  │ └ val2
   ├─┬ key1
-  | | └ val1
-  | └ key2
-  |   └ val2
+  │ │ └ val1
+  │ └ key2
+  │   └ val2
   └ primitive
 ```
