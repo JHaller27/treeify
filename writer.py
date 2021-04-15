@@ -1,11 +1,10 @@
 from tree import *
 
 
-EMPTY_INDENT = '   '
-PIPED_INDENT = '│  '
-SPLIT_INDENT = '├─'
-ELBOW_INDENT = '└─'
-ARRAY_INDEX =  '─┬'
+EMPTY_INDENT = '  '
+PIPED_INDENT = '│ '
+SPLIT_INDENT = '├ '
+ELBOW_INDENT = '└ '
 
 
 class UnicodeWriter(IWriter):
@@ -40,7 +39,7 @@ class UnicodeWriter(IWriter):
         _write(k, v, ELBOW_INDENT, EMPTY_INDENT)
 
     def write_primitive(self, node: PrimitiveNode):
-        print(self._prefix, node.value, sep="")
+        print(self._prefix, ELBOW_INDENT, node.value, sep="")
 
     def write_list(self, node: ListNode):
         children = list(enumerate(node.values()))
