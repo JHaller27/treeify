@@ -1,18 +1,18 @@
 from tree import *
 
 
-def to_node(struct) -> INode:
+def treeify(struct) -> INode:
     if isinstance(struct, dict):
         node = DictNode()
         for k, v in struct.items():
-            node.add_node(k, to_node(v))
+            node.add_node(k, treeify(v))
 
         return node
 
     if isinstance(struct, list):
         node = ListNode()
         for v in struct:
-            node.add_node(to_node(v))
+            node.add_node(treeify(v))
 
         return node
 

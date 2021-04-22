@@ -1,7 +1,7 @@
 import yaml
 import argparse
 from writer import UnicodeWriter
-from treeify import to_node
+from treeify import treeify
 
 
 def width_arg(rval: str) -> int:
@@ -35,7 +35,7 @@ else:
 data = "\n".join(lines)
 data_struct = yaml.safe_load(data)
 
-root = to_node(data_struct)
+root = treeify(data_struct)
 
 writer = UnicodeWriter(args.width)
 root.write_to(writer)
