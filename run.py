@@ -1,7 +1,7 @@
 import yaml
 import argparse
-from tree import *
 from writer import UnicodeWriter
+from treeify import to_node
 
 
 def width_arg(rval: str) -> int:
@@ -30,24 +30,6 @@ if args.path is None or args.path == "-":
 else:
     with open(args.path, "r") as fp:
         lines = fp.readlines()
-
-
-def to_node(struct) -> INode:
-    if isinstance(struct, dict):
-        node = DictNode()
-        for k, v in struct.items():
-            node.add_node(k, to_node(v))
-
-        return node
-
-    if isinstance(struct, list):
-        node = ListNode()
-        for v in struct:
-            node.add_node(to_node(v))
-
-        return node
-
-    return PrimitiveNode(struct)
 
 
 data = "\n".join(lines)
